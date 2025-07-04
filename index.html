@@ -8,6 +8,31 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Audio Elements -->
+    <audio id="backgroundMusic" loop>
+        <source src="https://stream.zeno.fm/0r0xa792kwzuv" type="audio/mpeg">
+        <!-- Fallback to another Lofi Japanese stream -->
+        <source src="https://stream.zeno.fm/4y0h3bm5m6quv" type="audio/mpeg">
+    </audio>
+    
+    <audio id="correctSound">
+        <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.wav" type="audio/wav">
+    </audio>
+    
+    <audio id="incorrectSound">
+        <source src="https://www.soundjay.com/misc/sounds/fail-buzzer-02.wav" type="audio/wav">
+    </audio>
+
+    <!-- Music Controls -->
+    <div class="music-controls">
+        <button id="musicToggle" class="music-btn">
+            <span class="music-icon">🎵</span>
+        </button>
+        <div class="volume-control">
+            <input type="range" id="volumeSlider" min="0" max="100" value="30" class="volume-slider">
+        </div>
+    </div>
+
     <div class="container">
         <!-- Màn hình chọn bảng chữ cái -->
         <div id="alphabet-selection" class="screen active">

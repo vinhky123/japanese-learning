@@ -151,6 +151,7 @@ let currentQuestion = null;
 let score = 0;
 let totalQuestions = 0;
 let usedQuestions = new Set();
+let isMusicPlaying = false;
 
 // DOM Elements
 const alphabetSelection = document.getElementById("alphabet-selection");
@@ -163,6 +164,13 @@ const feedback = document.getElementById("feedback");
 const feedbackText = document.getElementById("feedback-text");
 const currentScore = document.getElementById("current-score");
 const totalQuestionsSpan = document.getElementById("total-questions");
+
+// Audio Elements
+const backgroundMusic = document.getElementById("backgroundMusic");
+const correctSound = document.getElementById("correctSound");
+const incorrectSound = document.getElementById("incorrectSound");
+const musicToggle = document.getElementById("musicToggle");
+const volumeSlider = document.getElementById("volumeSlider");
 
 // Event Listeners
 document.addEventListener("DOMContentLoaded", function () {
@@ -179,7 +187,67 @@ document.addEventListener("DOMContentLoaded", function () {
   backBtn.addEventListener("click", function () {
     showAlphabetSelection();
   });
+
+  // Music controls
+  musicToggle.addEventListener("click", toggleMusic);
+  volumeSlider.addEventListener("input", updateVolume);
+
+  // Khởi tạo âm nhạc
+  initializeMusic();
 });
+
+// Khởi tạo âm nhạc
+function initializeMusic() {
+  // Set volume ban đầu
+  backgroundMusic.volume = 0.3;
+  correctSound.volume = 0.5;
+  incorrectSound.volume = 0.5;
+
+  // Cố gắng phát nhạc nền
+  backgroundMusic.play().catch((error) => {
+    console.log("Không thể tự động phát nhạc:", error);
+  });
+
+  // Lưu trạng thái âm nhạc
+  isMusicPlaying = true;
+}
+
+// Toggle âm nhạc
+function toggleMusic() {
+  if (isMusicPlaying) {
+    backgroundMusic.pause();
+    musicToggle.classList.add("muted");
+    isMusicPlaying = false;
+  } else {
+    backgroundMusic.play();
+    musicToggle.classList.remove("muted");
+    isMusicPlaying = true;
+  }
+}
+
+// Cập nhật âm lượng
+function updateVolume() {
+  const volume = volumeSlider.value / 100;
+  backgroundMusic.volume = volume;
+  correctSound.volume = volume;
+  incorrectSound.volume = volume;
+}
+
+// Phát âm thanh đúng
+function playCorrectSound() {
+  correctSound.currentTime = 0;
+  correctSound.play().catch((error) => {
+    console.log("Không thể phát âm thanh:", error);
+  });
+}
+
+// Phát âm thanh sai
+function playIncorrectSound() {
+  incorrectSound.currentTime = 0;
+  incorrectSound.play().catch((error) => {
+    console.log("Không thể phát âm thanh:", error);
+  });
+}
 
 // Chuyển sang màn hình quiz
 function startQuiz(alphabetType) {
@@ -280,6 +348,7 @@ function checkAnswer(selectedChar, correctChar) {
     // Đáp án đúng
     score++;
     showFeedback("Chính xác! 🎉", "correct");
+    playCorrectSound();
 
     // Tìm và highlight nút đúng
     optionBtns.forEach((btn) => {
@@ -293,6 +362,7 @@ function checkAnswer(selectedChar, correctChar) {
       `Sai rồi! Đáp án đúng là: ${correctChar.character}`,
       "incorrect"
     );
+    playIncorrectSound();
 
     // Highlight nút sai và nút đúng
     optionBtns.forEach((btn) => {
