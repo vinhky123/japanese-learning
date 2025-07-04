@@ -203,13 +203,12 @@ function initializeMusic() {
   correctSound.volume = 0.5;
   incorrectSound.volume = 0.5;
 
-  // Cố gắng phát nhạc nền
-  backgroundMusic.play().catch((error) => {
-    console.log("Không thể tự động phát nhạc:", error);
-  });
+  // Trạng thái ban đầu là tắt
+  isMusicPlaying = false;
+  musicToggle.classList.add("muted");
 
-  // Lưu trạng thái âm nhạc
-  isMusicPlaying = true;
+  // Không tự động phát nhạc
+  backgroundMusic.pause();
 }
 
 // Toggle âm nhạc
@@ -217,10 +216,12 @@ function toggleMusic() {
   if (isMusicPlaying) {
     backgroundMusic.pause();
     musicToggle.classList.add("muted");
+    musicToggle.classList.remove("playing");
     isMusicPlaying = false;
   } else {
     backgroundMusic.play();
     musicToggle.classList.remove("muted");
+    musicToggle.classList.add("playing");
     isMusicPlaying = true;
   }
 }

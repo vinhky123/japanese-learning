@@ -53,12 +53,25 @@ body {
 }
 
 .music-btn.muted .music-icon {
-  opacity: 0.2;
+  opacity: 0.5;
+}
+
+.music-btn.playing .music-icon {
+  animation: rotate 3s linear infinite;
 }
 
 .music-icon {
   font-size: 1.5rem;
   transition: all 0.3s ease;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .volume-control {
